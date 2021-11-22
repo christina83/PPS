@@ -1,3 +1,5 @@
+const express = require('express');
+const router = express.Router();
 const Pool = require('pg').Pool
 
 const pool = new Pool({
@@ -18,7 +20,6 @@ const getMachines = (request, response) => {
 };
 
 const createMachine = (request, response) => {
-  console.log(request.body);
   const { name, type } = request.body
 
   pool.query('INSERT INTO machines (name, type) VALUES ($1, $2)', [name, type], (error, results) => {
@@ -56,9 +57,9 @@ const deleteMachine = (request, response) => {
   })
 }
 
-module.exports = {
-  getMachines,
-  createMachine,
-  updateMachine,
-  deleteMachine,
-}
+router.get('/machines', getMachines);
+router.post('/machines', createMachine);
+router.put('/machines/:id', updateMachine);
+router.delete('/machines/:id', deleteMachine);
+
+module.exports = router;
