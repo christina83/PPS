@@ -10,29 +10,29 @@ const pool = new Pool({
   port: 5432,
 })
 
-const getMachines = (request, response) => {
+const getMachines = (req, res) => {
   pool.query('SELECT * FROM machines ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
+    res.status(200).json(results.rows)
   });
 };
 
-const createMachine = (request, response) => {
-  const { name, type } = request.body
+const createMachine = (req, res) => {
+  const { name, type } = req.body
 
   pool.query('INSERT INTO machines (name, type) VALUES ($1, $2)', [name, type], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`Machine added with ID: ${results.insertId}`)
+    res.status(201).send(`Machine added with ID: ${results.insertId}`)
   });
 };
 
-const updateMachine = (request, response) => {
-  const id = parseInt(request.params.id)
-  const { name, type } = request.body
+const updateMachine = (req, res) => {
+  const id = parseInt(req.params.id)
+  const { name, type } = req.body
 
   pool.query(
     'UPDATE machines SET name = $1, type = $2 WHERE id = $3',
@@ -41,25 +41,25 @@ const updateMachine = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`Machine modified with ID: ${id}`)
+      res.status(200).send(`Machine modified with ID: ${id}`)
     }
   )
 }
 
-const deleteMachine = (request, response) => {
-  const id = parseInt(request.params.id)
+const deleteMachine = (req, res) => {
+  const id = parseInt(req.params.id)
 
   pool.query('DELETE FROM machines WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).send(`Machine deleted with ID: ${id}`)
+    res.status(200).send(`Machine deleted with ID: ${id}`)
   })
 }
 
-router.get('/machines', getMachines);
-router.post('/machines', createMachine);
-router.put('/machines/:id', updateMachine);
-router.delete('/machines/:id', deleteMachine);
+router.get('/', getMachines);
+router.post('/', createMachine);
+router.put('/:id', updateMachine);
+router.delete('/:id', deleteMachine);
 
 module.exports = router;
