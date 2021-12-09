@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const result = await poolConnection.query('SELECT * FROM orders ORDER BY id ASC');
-  res.render('pages/order');
+  res.render('pages/orders', {
+    orders: result.rows
+  });
 });
 
 router.post('/', async (req, res) => {
