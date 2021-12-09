@@ -9,12 +9,15 @@
         </header>
         <main>
             <div class="jumbotron">
-                <h1>Machines</h1>
-                <ul><% for(let i = 0; i < machines.length; i++) {  <!-- wird ausgeführt -->
-                    %> 
-                        <li><%= machines[i].name %> - <%= machines[i].type%></li>  <!-- wird eingefügt -->
-                    <%
-                } %></ul>            
+                <h1>Machines Table</h1>
+                <table class="table">
+                    <% for(let i = 0; i < machines.length; i++) { %>
+                        <tr>
+                            <td><%= machines[i].name %></td>
+                            <td><%= machines[i].type %></td>
+                        </tr>                        
+                  <% } %>                
+                </table>      
             </div>
         </main>
         <footer>
@@ -22,5 +25,3 @@
         </footer>
     </body>
 </html>
-
-<!--Tabelle statt ul ausgeben-->
