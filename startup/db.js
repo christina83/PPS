@@ -10,7 +10,10 @@ const pool = new Pool({
   
 
 module.exports = function() {
-    ;(async function() {
-        client = await pool.connect();
+    ;(function() {
+        client = pool; // Scheiß Name, weil Rolle des Dings im Verhältnis zu meiner DB benannt ist (statt im Verhältnis zum Rest meiner App)
     })()
 };
+
+// Reinitialisierungsmechanismus
+// pool.query nur Zwischenlösung, client name noch ändern

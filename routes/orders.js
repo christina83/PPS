@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const result = await client.query('SELECT * FROM orders ORDER BY id ASC');
-  res.send(result);
+  res.render('pages/order');
 });
 
 router.post('/', async (req, res) => {

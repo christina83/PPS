@@ -2,10 +2,12 @@
 const express = require('express');
 const router = express.Router();
 
-
+// Diese get Abfrage sollte nicht auch noch die Ausgabe manipulieren, sondern nur rendern
 router.get('/', async (req, res) => {
   const result = await client.query('SELECT * FROM machines ORDER BY id ASC');
-  res.send(result);
+  res.render('pages/machines', {
+    machines: result.rows
+  });
 });
 
 router.post('/', async (req, res) => {

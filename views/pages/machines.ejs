@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <body class="container">
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+        <main>
+            <div class="jumbotron">
+                <h1>Machines</h1>
+                <ul><% for(let i = 0; i < machines.length; i++) {  <!-- wird ausgeführt -->
+                    %> 
+                        <li><%= machines[i].name %> - <%= machines[i].type%></li>  <!-- wird eingefügt -->
+                    <%
+                } %></ul>            
+            </div>
+        </main>
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </body>
+</html>
+
+<!--Tabelle statt ul ausgeben-->
