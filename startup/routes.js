@@ -4,11 +4,10 @@ const orders = require('../routes/orders');
 
 
 // Middleware Functions: Connect URL with Router
+// app.use means that this middleware  will be called for every call to the application
 module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use('/machines', machines);
     app.use('/orders', orders);    
 }
-
-// analog für router machen (reicht ein router für alles?)

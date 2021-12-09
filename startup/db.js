@@ -11,7 +11,7 @@ const pool = new Pool({
 
 module.exports = function() {
     ;(function() {
-        client = pool; // Scheiß Name, weil Rolle des Dings im Verhältnis zu meiner DB benannt ist (statt im Verhältnis zum Rest meiner App)
+        poolConnection = pool; // Scheiß Name, weil Rolle des Dings im Verhältnis zu meiner DB benannt ist (statt im Verhältnis zum Rest meiner App)
     })()
 };
 
