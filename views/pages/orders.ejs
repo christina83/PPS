@@ -4,12 +4,11 @@
         <%- include('../partials/head'); %>
     </head>
     <body class="container">
-
         <header>
             <%- include('../partials/header'); %>
         </header>
-
         <main>
+            <!-- Order Übersicht -->
             <div class="jumbotron">
                 <h1>Current Orders</h1>
                 <table class="table">
@@ -19,15 +18,50 @@
                             <td><%= orders[i].task %></td>
                             <td><%= orders[i].temperature %></td>
                             <td><%= orders[i].material %></td>
+                            <!-- Hier Weiterleitung zu localhost:3000/orders/orders[i].id machen, denn auf der Seite greift delete request -->
+                            <form action="orders/delete/<%= orders[i].id %>" method="post">
+                                <button type="submit">Delete</button>
+                            </form>                        
                         </tr>                        
                   <% } %>                
                 </table>      
             </div>
+            <!-- New Order erstellen -->
+            <div class="jumbotron">
+                <h1>New Order</h1>
+                <form action="orders/" method="post">
+                    <div class="form-group">
+                      <label for="customer">Name</label>
+                      <input type="text" name="customer" class="form-control" id="customer" placeholder="Maria Musterfrau">
+                    </div>
+                    <div class="form-group">
+                        <label for="task">Object</label>
+                        <input type="text" name="task" class="form-control" id="task" placeholder="Object to print">
+                      </div>
+                    <div class="form-group">
+                      <label for="temperature">Temperature in process</label>
+                      <select class="form-control" name="temperature" id="temperature">
+                        <option>50</option>
+                        <option>100</option>
+                        <option>150</option>
+                        <option>200</option>
+                      </select>
+                    </div>     
+                    <div class="form-group">
+                        <label for="material">Material of Output</label>
+                        <select class="form-control" name="material" id="material">
+                          <option>Synthetic</option>
+                          <option>Stone</option>
+                          <option>Metal</option>
+                          <option>Glas</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Send</button>      
+                </form>
+            </div>
         </main>
-
         <footer>
             <%- include('../partials/footer'); %>
         </footer>
-
     </body>
 </html>
