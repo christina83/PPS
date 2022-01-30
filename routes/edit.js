@@ -4,15 +4,15 @@ const router = express.Router();
 
 // Fertig?
 router.get('/:id/edit', async (req, res) => {
-    const id = parseInt(req.params.id) // Bisher NaN
-    const result = await poolConnection.query('SELECT FROM orders WHERE id = $1', [id]);
+    const id = parseInt(req.params.id)
+    const result = await poolConnection.query('SELECT * FROM orders WHERE id = $1', [id]);
     res.render('pages/edit', {
-      order: result
+      order: result.rows[0]
     });
   });
 
   // Die müsste jetzt so stimmen
-  router.put('/:id/update', async (req, res) => {
+  router.post('/:id/update', async (req, res) => {
     const id = parseInt(req.params.id)
     const { customer, task, temperature, material } = req.body
     const result = await poolConnection.query('UPDATE orders SET customer = $1, task = $2, temperature = $3, material = $4 WHERE id = $5', [customer, task, temperature, material, id]);
