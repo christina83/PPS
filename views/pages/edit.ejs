@@ -8,25 +8,10 @@
             <%- include('../partials/header'); %>
         </header>
         <main>
-            <!-- Order Übersicht -->
+            <!-- Edit Order -->
             <div class="jumbotron">
-                <h1>Current Orders</h1>
-                <table class="table">
-                    <% for(let i = 0; i < orders.length; i++) { %>
-                        <tr>
-                            <td><%= orders[i].customer %></td>
-                            <td><%= orders[i].task %></td>
-                            <td><%= orders[i].temperature %></td>
-                            <td><%= orders[i].material %></td>
-                            <td><a href="orders/<%= orders[i].id %>/edit">Edit</a></td>
-                        </tr>                        
-                  <% } %>                
-                </table>      
-            </div>
-            <!-- New Order erstellen -->
-            <div class="jumbotron">
-                <h1>New Order</h1>
-                <form action="orders/" method="post">
+                <h1>Edit Order</h1>
+                <form action="orders/<%= order.id %>/update?_method=put" method="post">
                     <div class="form-group">
                       <label for="customer">Name</label>
                       <input type="text" name="customer" class="form-control" id="customer" placeholder="Maria Musterfrau">
@@ -53,7 +38,7 @@
                           <option>Glas</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-secondary">Send</button>      
+                    <button type="submit" class="btn btn-secondary">Update</button>      
                 </form>
             </div>
         </main>

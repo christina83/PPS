@@ -14,13 +14,6 @@ router.post('/', async (req, res) => {
   const { customer, task, temperature, material } = req.body
   const result = await poolConnection.query('INSERT INTO orders (customer, task, temperature, material) VALUES ($1, $2, $3, $4)', [customer, task, temperature, material]);
 });
-
-router.put('/:id', async (req, res) => {
-  const id = parseInt(req.params.id)
-  const { customer, task, temperature, material } = req.body
-  const result = await poolConnection.query('UPDATE orders SET customer = $1, task = $2, temperature = $3, material = $4 WHERE id = $5', [customer, task, temperature, material, id]);
-  res.send(result);
-});
   
 router.post('/delete/:id', async (req, res) => {
   const id = parseInt(req.params.id)
