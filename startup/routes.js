@@ -12,8 +12,8 @@ module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use('/machines', machines);
-    app.use('/orders', orders);  
-    app.use('/orders', edit);  
+    app.use('/orders', orders);
+    app.use('/orders', edit); 
     app.use(methodOverride("_method", {
         methods: ["POST", "GET"]
     }));

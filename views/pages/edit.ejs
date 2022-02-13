@@ -11,7 +11,7 @@
             <!-- Edit Order -->
             <div class="jumbotron">
                 <h1>Edit Order</h1>
-                <form action="/<%= order.id %>/update?_method=PUT" method="post">
+                <form action="update?_method=put" method="post">
                     <div class="form-group">
                       <label for="customer">Name</label>
                       <input type="text" name="customer" class="form-control" id="customer" placeholder="<%= order.customer %>">
