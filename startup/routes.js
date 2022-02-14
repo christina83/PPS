@@ -6,10 +6,10 @@ const methodOverride = require("method-override");
 
 
 
-// Middleware Functions: Connect URL with Router
+// Middleware Functions
 // app.use means that this middleware  will be called for every call to the application
 module.exports = (app) => {
-    app.use(methodOverride("_method"));
+    app.use(methodOverride("_method")); // Muss vor app.use aufgerufen werden
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use('/machines', machines);

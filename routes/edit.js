@@ -15,9 +15,7 @@ router.get('/:id/edit', async (req, res) => {
     const id = parseInt(req.params.id)
     const { customer, task, temperature, material } = req.body
     const result = await poolConnection.query('UPDATE orders SET customer = $1, task = $2, temperature = $3, material = $4 WHERE id = $5', [customer, task, temperature, material, id]);
-    res.render('pages/orders', { // Bug
-      orders: result.rows
-    });
+    res.redirect('/orders');
   });
 
 
