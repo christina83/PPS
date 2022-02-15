@@ -1,6 +1,7 @@
 // Endpoint to manage the machines
 const express = require('express');
 const router = express.Router();
+const Machine = require('../models/Machine');
 
 // Diese get Abfrage sollte nicht auch noch die Ausgabe manipulieren, sondern nur rendern
 router.get('/', async (req, res) => {
@@ -10,10 +11,15 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   const { name, type } = req.body
-  const result = await poolConnection.query('INSERT INTO machines (name, type) VALUES ($1, $2)', [name, type]);
-  res.send(result);
+  try {
+    const machine = new Machine({ name, type });
+    const result = await machine.createMachine();
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }  
 });
 
 router.put('/:id', async (req, res) => {

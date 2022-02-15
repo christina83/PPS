@@ -1,6 +1,7 @@
 // Endpoint to manage the orders
 const express = require('express');
 const router = express.Router();
+const Order = require('../models/Order');
 
 
 router.get('/', async (req, res) => {
@@ -10,9 +11,15 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   const { customer, task, temperature, material } = req.body
-  const result = await poolConnection.query('INSERT INTO orders (customer, task, temperature, material) VALUES ($1, $2, $3, $4)', [customer, task, temperature, material]);
+  try {
+    const order = new Order({ customer, task, temperature, material });
+    const result = await order.createOrder();
+    res.redirect('/orders');
+  } catch (error) {
+    next(error);
+  }
 });
   
 router.post('/delete/:id', async (req, res) => {
