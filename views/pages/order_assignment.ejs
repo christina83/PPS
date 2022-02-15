@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <body class="container">
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+        <main>
+            <!-- Auftragszuordnung Übersicht -->
+            <div class="jumbotron">
+                <h1>Order assigments (WIP)</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Used machine</th>
+                            <th>Allocated orders</th>
+                        </tr>
+                    </thead>
+                    <% for(let i = 0; i < orders.length; i++) { %>
+                        <tr>
+                            <td><%= orders[i].customer %></td>
+                            <td><%= orders[i].task %></td>
+                            <td><%= orders[i].temperature %></td>
+                            <td><%= orders[i].material %></td>
+                            <td><a href="orders/<%= orders[i].id %>/edit">Edit</a></td>
+                        </tr>                        
+                  <% } %>                
+                </table>
+                <h1>Order assigments (Scheduled)</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Used machine</th>
+                            <th>Allocated orders</th>
+                        </tr>
+                    </thead>
+                    <% for(let i = 0; i < orders.length; i++) { %>
+                        <tr>
+                            <td><%= orders[i].customer %></td>
+                            <td><%= orders[i].task %></td>
+                            <td><%= orders[i].temperature %></td>
+                            <td><%= orders[i].material %></td>
+                            <td><a href="orders/<%= orders[i].id %>/edit">Edit</a></td>
+                        </tr>                        
+                  <% } %>                
+                </table>      
+            </div>           
+        </main>
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </body>
+</html>

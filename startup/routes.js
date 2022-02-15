@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const machines = require('../routes/machines');
 const orders = require('../routes/orders');
 const edit = require('../routes/edit');
+const order_assignment = require('../routes/order_assignment');
 const methodOverride = require("method-override");
 
 
@@ -15,4 +16,5 @@ module.exports = (app) => {
     app.use('/machines', machines);
     app.use('/orders', orders);
     app.use('/orders', edit); 
+    app.use('/order-assignments', order_assignment);
 }
