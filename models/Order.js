@@ -1,7 +1,7 @@
 const express = require('express');
 
 // Order constructor
-function Order ({ id, customer, task, temperature, material }) {
+function Order ({ customer, task, temperature, material }) {
     this.customer = customer;
     this.task = task;
     this.temperature = temperature;
@@ -20,6 +20,18 @@ Order.prototype.createOrder = async function() {
         throw error;
     }
 };
+
+Order.prototype.updateOrder = async function(id) {
+    try {
+        const { rows } = await poolConnection.query(
+            `UPDATE orders SET customer = $1, task = $2, temperature = $3, material = $4 WHERE id = $5`, [this.customer, this.task, this.temperature, this.material, id]
+        );
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
 
 module.exports = Order;
 
