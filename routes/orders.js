@@ -21,15 +21,6 @@ router.post('/', async (req, res, next) => {
     next(error);
   }
 });
-  
-router.post('/delete/:id', async (req, res) => {
-  const id = parseInt(req.params.id)
-  const result = await poolConnection.query('DELETE FROM orders WHERE id = $1', [id]);
-  // Hier noch Weiterleitung von /orders/id zu /orders machen
-  res.render('pages/orders', {
-    orders: result.rows
-  });
-});   
 
 
 module.exports = router;

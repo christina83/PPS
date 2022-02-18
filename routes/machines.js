@@ -28,12 +28,6 @@ router.put('/:id', async (req, res) => {
   const result = await poolConnection.query('UPDATE machines SET name = $1, type = $2 WHERE id = $3', [name, type, id]);
   res.send(result);
 });
-  
-router.delete('/:id', async (req, res) => {
-  const id = parseInt(req.params.id)
-  const result = await poolConnection.query('DELETE FROM machines WHERE id = $1', [id]);
-  res.send(result);
-});   
 
 
 module.exports = router;
