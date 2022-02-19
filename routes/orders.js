@@ -1,11 +1,12 @@
-// Endpoint to manage the orders
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/Order');
+const { Order, getAllOrders } = require('../models/Order');
+
 
 
 router.get('/', async (req, res) => {
-  const result = await poolConnection.query('SELECT * FROM orders ORDER BY id ASC');
+  const result = await getAllOrders(); // ohne await wird Funktion zu früh ausgeführt
+  // console.log(result.rows); // result ist ein pending promise, war noch nicht da
   res.render('pages/orders', {
     orders: result.rows
   });
@@ -15,10 +16,10 @@ router.post('/', async (req, res, next) => {
   const { customer, task, temperature, material } = req.body
   try {
     const order = new Order({ customer, task, temperature, material });
-    const result = await order.createOrder();
+    await order.createOrder();
     res.redirect('/orders');
   } catch (error) {
-    next(error);
+      next(error);
   }
 });
 

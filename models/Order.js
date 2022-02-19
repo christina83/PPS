@@ -8,6 +8,15 @@ function Order ({ customer, task, temperature, material }) {
     this.material = material;
 };
 
+async function getAllOrders () {
+    try {
+        const result = await poolConnection.query('SELECT * FROM orders ORDER BY id ASC');
+        return result;
+    } catch (error) {
+        throw error;
+    }    
+}
+
 
 // Method to invoke the constructor
 Order.prototype.createOrder = async function() {
@@ -33,5 +42,6 @@ Order.prototype.updateOrder = async function(id) {
 };
 
 
-module.exports = Order;
+exports.Order = Order;
+exports.getAllOrders = getAllOrders;
 
