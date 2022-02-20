@@ -1,7 +1,7 @@
 // Endpoint to manage editing the orders
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/order');
+const { Order } = require('../models/Order');
 
 router.get('/:id/edit', async (req, res) => {
     const id = parseInt(req.params.id)
@@ -19,7 +19,7 @@ router.get('/:id/edit', async (req, res) => {
       await order.updateOrder(id);
       res.redirect('/orders');
     } catch (error) {
-        next(error);
+        throw(error);
     }
   });
 

@@ -2,11 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { Order, getAllOrders } = require('../models/Order');
 
-
-
 router.get('/', async (req, res) => {
-  const result = await getAllOrders(); // ohne await wird Funktion zu früh ausgeführt
-  // console.log(result.rows); // result ist ein pending promise, war noch nicht da
+  const result = await getAllOrders();
   res.render('pages/orders', {
     orders: result.rows
   });
@@ -19,9 +16,8 @@ router.post('/', async (req, res, next) => {
     await order.createOrder();
     res.redirect('/orders');
   } catch (error) {
-      next(error);
+      throw(error);
   }
 });
-
 
 module.exports = router;
