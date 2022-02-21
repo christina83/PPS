@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { customer, task, temperature, material } = req.body
   try {
-    const order = new Order({ customer, task, temperature, material });
-    await order.createOrder();
+    let order = new Order({ customer, task, temperature, material });
+    order = await order.createOrder();
     res.redirect('/orders');
   } catch (error) {
       throw(error);

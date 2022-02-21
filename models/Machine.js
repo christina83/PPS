@@ -14,13 +14,14 @@ async function getAllMachines() {
     }    
 };
 
-// Erstelle eine neue Maschine
+// Erstelle eine neue Maschine (sollte eine Maschine erstellen und nur die zurückgeben)
 Machine.prototype.createMachine = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO machines (name, type) VALUES ($1, $2)`, [this.name, this.type]
+            `INSERT INTO machines (name, type) VALUES ($1, $2) RETURNING id`, [this.name, this.type]
         );
-        return rows;
+        this.id = rows[0].id;
+        return this;
     } catch (error) {
         throw error;
     }
@@ -31,7 +32,6 @@ Machine.prototype.updateMachine = async function(id) {
     try {
         const { rows } = await poolConnection.query(
             `UPDATE machines SET name = $1, type = $2 WHERE id = $3`, [this.name, this.type, id]
-
         );
         return rows;
     } catch (error) {

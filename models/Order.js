@@ -20,9 +20,10 @@ async function getAllOrders () {
 Order.prototype.createOrder = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO orders (customer, task, temperature, material) VALUES ($1, $2, $3, $4)`, [this.customer, this.task, this.temperature, this.material]
+            `INSERT INTO orders (customer, task, temperature, material) VALUES ($1, $2, $3, $4) RETURNING id`, [this.customer, this.task, this.temperature, this.material]
         );
-        return rows;
+        this.id = rows[0].id;
+        return this;
     } catch (error) {
         throw error;
     }
