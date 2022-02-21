@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
   const { customer, task, temperature, material } = req.body
   try {
     const order = new Order({ customer, task, temperature, material });

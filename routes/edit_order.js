@@ -1,4 +1,4 @@
-// Endpoint to manage editing the orders
+// Editing the orders
 const express = require('express');
 const router = express.Router();
 const { Order } = require('../models/Order');
@@ -6,7 +6,7 @@ const { Order } = require('../models/Order');
 router.get('/:id/edit', async (req, res) => {
     const id = parseInt(req.params.id)
     const result = await poolConnection.query('SELECT * FROM orders WHERE id = $1', [id]);
-    res.render('pages/edit', {
+    res.render('pages/edit_order', {
       order: result.rows[0]
     });
   });

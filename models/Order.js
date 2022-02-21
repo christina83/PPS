@@ -1,5 +1,3 @@
-const express = require('express');
-
 // Order constructor
 function Order ({ customer, task, temperature, material }) {
     this.customer = customer;

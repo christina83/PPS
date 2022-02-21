@@ -3,8 +3,8 @@ const { Pool } = require('pg');
 const pool = new Pool({
     user: 'me',
     host: 'localhost',
-    database: 'api',
-    password: 'password',
+    database: 'pps',
+    password: 'pps',
     port: 5432,
 });
   

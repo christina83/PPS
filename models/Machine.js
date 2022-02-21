@@ -1,16 +1,24 @@
-
 // Machine constructor
-function Machine ({ id, name, type }) {
-    this.id = id;
+function Machine ({ name, type }) {
     this.name = name;
     this.type = type;
 };
 
-// Method to invoke the constructor
+// Ausgabe aller Maschinen
+async function getAllMachines() {
+    try {
+        const result = await poolConnection.query('SELECT * FROM machines ORDER BY id ASC');
+        return result;
+    } catch (error) {
+        throw error;
+    }    
+};
+
+// Erstelle eine neue Maschine
 Machine.prototype.createMachine = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO machines (id, name, type) VALUES ($1, $2, $3)`, [this.id, this.name, this.type]
+            `INSERT INTO machines (name, type) VALUES ($1, $2)`, [this.name, this.type]
         );
         return rows;
     } catch (error) {
@@ -18,5 +26,19 @@ Machine.prototype.createMachine = async function() {
     }
 };
 
-module.exports = Machine;
+// Editiere eine bestehende Maschine
+Machine.prototype.updateMachine = async function(id) {
+    try {
+        const { rows } = await poolConnection.query(
+            `UPDATE machines SET name = $1, type = $2 WHERE id = $3`, [this.name, this.type, id]
+
+        );
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+exports.Machine = Machine;
+exports.getAllMachines = getAllMachines;
 

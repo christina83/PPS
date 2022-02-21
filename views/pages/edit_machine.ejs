@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <body class="container">
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+        <main>
+            <!-- Edit Machine -->
+            <div class="jumbotron">
+                <h1>Edit Machine</h1>
+                <form action="update?_method=put" method="post">
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input type="text" name="name" class="form-control" id="name" placeholder="<%= machine.name %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Object</label>
+                        <input type="text" name="type" class="form-control" id="type" placeholder="<%= machine.type %>">
+                      </div>
+                    <button type="submit" class="btn btn-secondary">Update</button>      
+                </form>
+            </div>
+        </main>
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </body>
+</html>

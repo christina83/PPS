@@ -8,6 +8,7 @@
             <%- include('../partials/header'); %>
         </header>
         <main>
+            <!-- Machinen Übersicht -->
             <div class="jumbotron">
                 <h1>Available machines</h1>
                 <table class="table">
@@ -15,9 +16,25 @@
                         <tr>
                             <td><%= machines[i].name %></td>
                             <td><%= machines[i].type %></td>
+                            <td><a href="machines/<%= machines[i].id %>/edit">Edit</a></td>
                         </tr>                        
                   <% } %>                
                 </table>      
+            </div>
+            <!-- Neue Maschine erstellen -->
+            <div class="jumbotron">
+                <h1>New Machine</h1>
+                <form action="machines/" method="post">
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input type="text" name="name" class="form-control" id="name" placeholder="z.B. MacBookPro">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Object</label>
+                        <input type="text" name="type" class="form-control" id="type" placeholder="z.B. Laptop">
+                      </div>                    
+                    <button type="submit" class="btn btn-secondary">Send</button>      
+                </form>
             </div>
         </main>
         <footer>

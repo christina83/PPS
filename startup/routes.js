@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser');
 const machines = require('../routes/machines');
 const orders = require('../routes/orders');
-const edit = require('../routes/edit');
+const edit_machine = require('../routes/edit_machine');
+const edit_order = require('../routes/edit_order');
 const order_assignment = require('../routes/order_assignment');
 const methodOverride = require("method-override");
 
@@ -14,7 +15,9 @@ module.exports = (app) => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use('/machines', machines);
+    app.use('/', machines);
     app.use('/orders', orders);
-    app.use('/orders', edit); 
+    app.use('/machines', edit_machine);
+    app.use('/orders', edit_order); 
     app.use('/order-assignments', order_assignment);
 }
