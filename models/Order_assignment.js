@@ -1,7 +1,7 @@
 // Order_assignment constructor
 function Order_assignment ({ machine_id, order_id, state }) {
     this.machine_id = machine_id;
-    this.order_id = order_id; // mehrere müssen möglich sein
+    this.order_id = order_id; // mehrere müssen möglich sein, dann neues order_assignment objekt
     this.state = state; // wip or scheduled
 };
 
