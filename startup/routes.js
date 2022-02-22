@@ -3,7 +3,7 @@ const machines = require('../routes/machines');
 const orders = require('../routes/orders');
 const edit_machine = require('../routes/edit_machine');
 const edit_order = require('../routes/edit_order');
-const order_assignment = require('../routes/order_assignment');
+const order_assignments = require('../routes/order_assignments');
 const methodOverride = require("method-override");
 
 
@@ -19,5 +19,5 @@ module.exports = (app) => {
     app.use('/orders', orders);
     app.use('/machines', edit_machine);
     app.use('/orders', edit_order); 
-    app.use('/order-assignments', order_assignment);
+    app.use('/order_assignments', order_assignments);
 }
