@@ -10,12 +10,12 @@
         <main>
             <!-- Order Assignments Übersicht -->
             <div class="jumbotron">
-                <h1>Assigments (WIP)</h1>
+                <h1>WIP</h1>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Used machine</th>
-                            <th>Allocated orders</th>
+                            <th>Machine</th>
+                            <th>Order</th>
                         </tr>
                     </thead>
                     <% for(let i = 0; i < order_assignments.length; i++) { %>
@@ -27,12 +27,12 @@
                         </tr>                        
                   <% } %>                
                 </table>
-                <h1>Assignments (Scheduled)</h1>
+                <h1>Scheduled</h1>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Used machine</th>
-                            <th>Allocated orders</th>
+                            <th>Machine</th>
+                            <th>Order</th>
                         </tr>
                     </thead>
                     <% for(let i = 0; i < order_assignments.length; i++) { %>
@@ -50,17 +50,28 @@
                 <h1>New Assignment</h1>
                 <form action="order_assignments/" method="post">
                     <div class="form-group">
-                      <label for="machine_id">Maschinen ID</label>
-                      <input type="text" name="machine_id" class="form-control" id="machine_id" placeholder="z.B. 19">
-                    </div>
+                        <label for="machine_id">Machine</label>
+                        <select class="form-control" name="machine_id" id="machine_id">
+                            <% for(let i=0; i < dropdown_machines.length; i++) { %>   
+                                <option><%= dropdown_machines[i].name %></option>
+                            <% } %>
+                        </select>
+                    </div>                    
                     <div class="form-group">
-                        <label for="order_id">Order ID</label>
-                        <input type="text" name="order_id" class="form-control" id="order_id" placeholder="z.B. 100">
-                    </div>     
+                        <label for="order_id">Order</label>
+                        <select class="form-control" name="order_id" id="order_id">
+                            <% for(let i=0; i < dropdown_orders.length; i++) { %>   
+                                <option><%= dropdown_orders[i].task %></option>
+                            <% } %>
+                        </select>
+                    </div>    
                     <div class="form-group">
                         <label for="state">State</label>
-                        <input type="text" name="state" class="form-control" id="state" placeholder="WIP / Scheduled">
-                    </div>                    
+                        <select class="form-control" name="state" id="state">
+                          <option>WIP</option>
+                          <option>Scheduled</option>                          
+                        </select>
+                    </div>                                                      
                     <button type="submit" class="btn btn-secondary">Send</button>      
                 </form>
             </div>         
