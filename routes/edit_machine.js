@@ -13,9 +13,9 @@ router.get('/:id/edit', async (req, res) => {
 
   router.put('/:id/update', async (req, res) => {
     const id = parseInt(req.params.id)
-    const { name, type } = req.body
+    const { name, type, state } = req.body
     try {
-      const machine = new Machine({ name, type });
+      const machine = new Machine({ name, type, state });
       await machine.updateMachine(id);
       res.redirect('/machines');
     } catch (error) {

@@ -15,9 +15,16 @@ router.get('/', async (req, res) => {
     });
 });
 
-
-
-router.post // Hier überlegen, wie ein neues Assignment erstellt werden soll (Dropdown anbieten mit bestehenden Maschinen/Orders)
+router.post('/', async (req, res) => {
+  const { machine_id, order_id, state } = req.body
+  try {
+    let order_assignment = new Order_assignment({ machine_id, order_id, state });
+    order_assignment = await order_assignment.createOrder_assignment();
+    res.redirect('/order_assignments');
+  } catch (error) {
+      throw(error);
+  }
+});
 
 
 module.exports = router;

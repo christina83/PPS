@@ -11,8 +11,9 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const { name, type } = req.body
+  const state = "available";
   try {
-    let machine = new Machine({ name, type });
+    let machine = new Machine({ name, type, state });
     machine = await machine.createMachine();
     res.redirect('/machines');
   } catch (error) {

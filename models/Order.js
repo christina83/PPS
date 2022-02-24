@@ -1,15 +1,26 @@
 // Order constructor
-function Order ({ customer, task, temperature, material }) {
+function Order ({ customer, task, temperature, material, state }) {
     this.customer = customer;
     this.task = task;
     this.temperature = temperature;
     this.material = material;
+    this.state = state;
 };
 
 // Ausgabe aller Orders
-async function getAllOrders () {
+async function getAllOrders() {
     try {
         const result = await poolConnection.query('SELECT * FROM orders ORDER BY id ASC');
+        return result;
+    } catch (error) {
+        throw error;
+    }    
+};
+
+// Ausgabe einer Order
+async function getOrder(id) {
+    try {
+        const result = await poolConnection.query('SELECT * FROM orders WHERE id = $1', [id]);
         return result;
     } catch (error) {
         throw error;
@@ -20,7 +31,7 @@ async function getAllOrders () {
 Order.prototype.createOrder = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO orders (customer, task, temperature, material) VALUES ($1, $2, $3, $4) RETURNING id`, [this.customer, this.task, this.temperature, this.material]
+            `INSERT INTO orders (customer, task, temperature, material, state) VALUES ($1, $2, $3, $4, $5) RETURNING id`, [this.customer, this.task, this.temperature, this.material, this.state]
         );
         this.id = rows[0].id;
         return this;
@@ -41,6 +52,19 @@ Order.prototype.updateOrder = async function(id) {
     }
 };
 
+// Verändere den Status einer Order
+async function changeOrderState (state, id) {
+    try {
+        const { rows } = await poolConnection.query(
+            `UPDATE orders SET state = $1 WHERE id = $2`, [state, id]
+        );
+    } catch (error) {
+        throw error;
+    }
+};
+
 exports.Order = Order;
 exports.getAllOrders = getAllOrders;
+exports.getOrder = getOrder;
+exports.changeOrderState = changeOrderState;
 

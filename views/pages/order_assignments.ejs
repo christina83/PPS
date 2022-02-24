@@ -53,7 +53,7 @@
                         <label for="machine_id">Machine</label>
                         <select class="form-control" name="machine_id" id="machine_id">
                             <% for(let i=0; i < dropdown_machines.length; i++) { %>   
-                                <option><%= dropdown_machines[i].name %></option>
+                                <option><%= dropdown_machines[i].id %></option>
                             <% } %>
                         </select>
                     </div>                    
@@ -61,7 +61,7 @@
                         <label for="order_id">Order</label>
                         <select class="form-control" name="order_id" id="order_id">
                             <% for(let i=0; i < dropdown_orders.length; i++) { %>   
-                                <option><%= dropdown_orders[i].task %></option>
+                                <option><%= dropdown_orders[i].id %></option>
                             <% } %>
                         </select>
                     </div>    

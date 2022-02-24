@@ -1,7 +1,8 @@
 // Machine constructor
-function Machine ({ name, type }) {
+function Machine ({ name, type, state }) {
     this.name = name;
     this.type = type;
+    this.state = state;
 };
 
 // Ausgabe aller Maschinen
@@ -18,7 +19,7 @@ async function getAllMachines() {
 Machine.prototype.createMachine = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO machines (name, type) VALUES ($1, $2) RETURNING id`, [this.name, this.type]
+            `INSERT INTO machines (name, type, state) VALUES ($1, $2, $3) RETURNING id`, [this.name, this.type, this.state]
         );
         this.id = rows[0].id;
         return this;

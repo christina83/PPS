@@ -13,9 +13,9 @@ router.get('/:id/edit', async (req, res) => {
 
   router.put('/:id/update', async (req, res) => {
     const id = parseInt(req.params.id)
-    const { customer, task, temperature, material } = req.body
+    const { customer, task, temperature, material, state } = req.body
     try {
-      const order = new Order({ customer, task, temperature, material });
+      const order = new Order({ customer, task, temperature, material, state });
       await order.updateOrder(id);
       res.redirect('/orders');
     } catch (error) {
