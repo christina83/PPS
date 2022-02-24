@@ -11,6 +11,7 @@
             <!-- Order Assignments Übersicht -->
             <div class="jumbotron">
                 <h1>WIP</h1>
+                <p></p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -19,15 +20,18 @@
                         </tr>
                     </thead>
                     <% for(let i = 0; i < order_assignments.length; i++) { %>
+                        <% if(order_assignments[i].state == "WIP") { %>
                         <tr>
                             <td><%= order_assignments[i].machine_id %></td>
                             <td><%= order_assignments[i].order_id %></td>
                             <td><%= order_assignments[i].state %></td>
                             <td><a href="order_assignments/<%= order_assignments[i].id %>/edit">Edit</a></td>
-                        </tr>                        
+                        </tr>           
+                        <% } %>             
                   <% } %>                
                 </table>
                 <h1>Scheduled</h1>
+                <p></p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -36,12 +40,14 @@
                         </tr>
                     </thead>
                     <% for(let i = 0; i < order_assignments.length; i++) { %>
+                        <% if(order_assignments[i].state == "Scheduled") { %>
                         <tr>
                             <td><%= order_assignments[i].machine_id %></td>
                             <td><%= order_assignments[i].order_id %></td>
                             <td><%= order_assignments[i].state %></td>
                             <td><a href="order_assignments/<%= order_assignments[i].id %>/edit">Edit</a></td>
-                        </tr>                        
+                        </tr> 
+                        <% } %>                       
                   <% } %>                
                 </table>      
             </div>  
@@ -61,7 +67,9 @@
                         <label for="order_id">Order</label>
                         <select class="form-control" name="order_id" id="order_id">
                             <% for(let i=0; i < dropdown_orders.length; i++) { %>   
+                                <% if(dropdown_orders[i].state == "outstanding") { %>
                                 <option><%= dropdown_orders[i].id %></option>
+                                <% } %>
                             <% } %>
                         </select>
                     </div>    

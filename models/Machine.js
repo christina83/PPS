@@ -40,6 +40,17 @@ Machine.prototype.updateMachine = async function(id) {
     }
 };
 
+// Verändere den Status einer Order
+async function changeMachineState (state, id) {
+    try {
+        const { rows } = await poolConnection.query(
+            `UPDATE machines SET state = $1 WHERE id = $2`, [state, id]
+        );
+    } catch (error) {
+        throw error;
+    }
+};
+
 exports.Machine = Machine;
 exports.getAllMachines = getAllMachines;
-
+exports.changeMachineState = changeMachineState;

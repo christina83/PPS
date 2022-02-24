@@ -1,4 +1,5 @@
-const { getOrder, changeOrderState } = require('./Order');
+const { changeOrderState } = require('./Order');
+const { changeMachineState } = require('./Machine');
 
 // Order_assignment constructor
 function Order_assignment ({ machine_id, order_id, state }) {
@@ -22,10 +23,10 @@ Order_assignment.prototype.createOrder_assignment = async function() {
     try {
         const { rows } = await poolConnection.query(
             `INSERT INTO order_assignments (machine_id, order_id, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.order_id, this.state]
-        );
+        );        
         this.id = rows[0].id;
         await changeOrderState("processing", this.order_id);
-        console.log('Kommt bis hier');
+        await changeMachineState("used", this.machine_id);
         return this;
     } catch (error) {
         throw error;
