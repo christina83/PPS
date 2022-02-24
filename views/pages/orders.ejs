@@ -13,13 +13,15 @@
                 <h1>Outstanding Orders</h1>
                 <table class="table">
                     <% for(let i = 0; i < orders.length; i++) { %>
+                        <% if(orders[i].state == "outstanding") { %>
                         <tr>
                             <td><%= orders[i].customer %></td>
                             <td><%= orders[i].task %></td>
                             <td><%= orders[i].temperature %></td>
                             <td><%= orders[i].material %></td>
                             <td><a href="orders/<%= orders[i].id %>/edit">Edit</a></td>
-                        </tr>                        
+                        </tr> 
+                        <% } %>                       
                   <% } %>                
                 </table>      
             </div>
