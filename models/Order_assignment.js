@@ -21,6 +21,12 @@ async function getAllAssignments() {
 // Method to invoke the constructor
 Order_assignment.prototype.createOrder_assignment = async function() {
     try {
+        const result = await getAllAssignments();
+        if(result.rows.length > 0) { 
+            this.state = "Scheduled"; 
+        } else {
+            this.state = "WIP";
+        }
         const { rows } = await poolConnection.query(
             `INSERT INTO order_assignments (machine_id, order_id, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.order_id, this.state]
         );        
