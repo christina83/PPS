@@ -10,46 +10,28 @@
         <main>
             <!-- Order Assignments Übersicht -->
             <div class="jumbotron">
-                <h1>WIP</h1>
-                <p></p>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Machine</th>
-                            <th>Order</th>
+                            <th></th>
+                            <th>WIP</th>
+                            <th>Scheduled</th>
                         </tr>
                     </thead>
-                    <% for(let i = 0; i < order_assignments.length; i++) { %>
-                        <% if(order_assignments[i].state == "WIP") { %>
+                    <% for(let i=0; i < order_assignments.length; i++) { %>
                         <tr>
-                            <td><%= order_assignments[i].machine_id %></td>
-                            <td><%= order_assignments[i].order_id %></td>
-                            <td><%= order_assignments[i].state %></td>
-                            <td><a href="order_assignments/<%= order_assignments[i].id %>/edit">Edit</a></td>
+                            <td>
+                                <% if(order_assignments[i].state == "WIP") { %>
+                                    <%= order_assignments[i].machine_id, order_assignments[i].orders %>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(order_assignments[i].state == "Scheduled") { %>
+                                    <%= order_assignments[i].machine_id, order_assignments[i].orders %>
+                                <% } %>
                         </tr>           
                         <% } %>             
-                  <% } %>                
-                </table>
-                <h1>Scheduled</h1>
-                <p></p>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Machine</th>
-                            <th>Order</th>
-                        </tr>
-                    </thead>
-                    <% for(let i = 0; i < order_assignments.length; i++) { %>
-                        <% if(order_assignments[i].state == "Scheduled") { %>
-                        <tr>
-                            <td><%= order_assignments[i].machine_id %></td>
-                            <td><%= order_assignments[i].order_id %></td>
-                            <td><%= order_assignments[i].state %></td>
-                            <td><a href="order_assignments/<%= order_assignments[i].id %>/edit">Edit</a></td>
-                        </tr> 
-                        <% } %>                       
-                  <% } %>                
-                </table>      
+                </table>                     
             </div>  
             <!-- Neue Order Assignment erstellen -->
             <div class="jumbotron">
@@ -73,13 +55,13 @@
                             <% } %>
                         </select>
                     </div>    
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label for="state">State</label>
                         <select class="form-control" name="state" id="state">
                           <option>WIP</option>
                           <option>Scheduled</option>                          
                         </select>
-                    </div>     -->                                                  
+                    </div>                                    
                     <button type="submit" class="btn btn-secondary">Send</button>      
                 </form>
             </div>         

@@ -2,14 +2,14 @@ const { changeOrderState } = require('./Order');
 const { changeMachineState } = require('./Machine');
 
 // Order_assignment constructor
-function Order_assignment ({ machine_id, order_id, state }) {
+function Order_assignment ({ machine_id, orders, state }) {
     this.machine_id = machine_id;
-    this.order_id = order_id; // mehrere müssen möglich sein, dann neues order_assignment objekt
-    this.state = state; // wip or scheduled
+    this.orders = orders; // mehrere order ids
+    this.state = state;
 };
 
 // Ausgabe aller Assignments
-async function getAllAssignments() {
+async function get_all_assignments() {
     try {
         const result = await poolConnection.query('SELECT * FROM order_assignments ORDER BY id ASC');
         return result;
@@ -19,26 +19,35 @@ async function getAllAssignments() {
 };
 
 // Method to invoke the constructor
-Order_assignment.prototype.createOrder_assignment = async function() {
+Order_assignment.prototype.create_order_assignment = async function() {
     try {
-        const result = await getAllAssignments();
-        if(result.rows.length > 0) { 
-            this.state = "Scheduled"; 
-        } else {
-            this.state = "WIP";
-        }
-        const { rows } = await poolConnection.query(
-            `INSERT INTO order_assignments (machine_id, order_id, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.order_id, this.state]
-        );        
-        this.id = rows[0].id;
-        await changeOrderState("processing", this.order_id);
+        const assignments = await get_all_assignments();
+        for (let i=0; i < assignments.rows.length; i++) {
+            if(this.machine_id == assignments.rows[i].machine_id) {
+                if(this.state == assignments.rows[i].state) {
+                    assignments.rows[i].add_order(this.orders);
+                }
+            } else {
+                const { rows } = await poolConnection.query(
+                    `INSERT INTO order_assignments (machine_id, orders, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.orders, this.state]
+                );        
+                this.id = rows[0].id;
+            }
+        }   
+        for(let i=0; i < this.orders.length; i++) {
+            await changeOrderState("processing", this.orders[i]);
+        }        
         await changeMachineState("used", this.machine_id);
-        return this;
+        return this; 
     } catch (error) {
         throw error;
     }
 };
 
+Order_assignment.prototype.add_order = async function(order_id) {
+    this.orders.push(order_id);
+}
+
 exports.Order_assignment = Order_assignment;
-exports.getAllAssignments = getAllAssignments;
+exports.get_all_assignments = get_all_assignments;
 
