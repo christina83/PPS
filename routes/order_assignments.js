@@ -16,9 +16,10 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { machine_id, orders, state } = req.body
+  const { machine_id, order_id, state } = req.body
   try {
-    let order_assignment = new Order_assignment({ machine_id, orders, state });
+    let order_assignment = new Order_assignment({ machine_id, state });
+    order_assignment.orders.push(order_id);
     order_assignment = await order_assignment.create_order_assignment();
     res.redirect('/order_assignments');
   } catch (error) {
