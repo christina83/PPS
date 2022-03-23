@@ -10,27 +10,34 @@
         <main>
             <!-- Order Assignments Übersicht -->
             <div class="jumbotron">
-                <table class="table">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
                         <tr>
                             <th></th>
+                            <th colspan="2"> Corresponding Orders</th>
+                        </tr>
+                        <tr>
+                            <th>Machine ID</th>
                             <th>WIP</th>
                             <th>Scheduled</th>
                         </tr>
                     </thead>
-                    <% for(let i=0; i < order_assignments.length; i++) { %>
-                        <tr>
-                            <td>
-                                <% if(order_assignments[i].state == "WIP") { %>
-                                    <%= order_assignments[i].machine_id, order_assignments[i].orders %>
-                                <% } %>
-                            </td>
-                            <td>
-                                <% if(order_assignments[i].state == "Scheduled") { %>
-                                    <%= order_assignments[i].machine_id, order_assignments[i].orders %>
-                                <% } %>
-                        </tr>           
-                        <% } %>             
+                        <% for(let i = 0; i < order_assignments_wip.size; i++) { %>                                    
+                            <% order_assignments_wip.get(i).forEach(function(value, key) { %>
+                                <tr>
+                                    <td>
+                                        <%= key %>
+                                    </td>    
+                                    <td>
+                                        <%= value %>
+                                    </td>      
+                                    <td>
+                                        <% for(let i = 0; i < order_assignments_scheduled.size; i++) { %>                                    
+                                            <% order_assignments_scheduled.get(i).forEach(function(value, key) { %>
+                                    </td>                          
+                                </tr>   
+                            <% }) %>  
+                        <% } %>
                 </table>                     
             </div>  
             <!-- Neue Order Assignment erstellen -->

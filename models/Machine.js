@@ -1,8 +1,7 @@
 // Machine constructor
-function Machine ({ name, type, state }) {
+function Machine ({ name, type }) {
     this.name = name;
     this.type = type;
-    this.state = state;
 };
 
 // Ausgabe aller Maschinen
@@ -19,7 +18,7 @@ async function getAllMachines() {
 Machine.prototype.createMachine = async function() {
     try {
         const { rows } = await poolConnection.query(
-            `INSERT INTO machines (name, type, state) VALUES ($1, $2, $3) RETURNING id`, [this.name, this.type, this.state]
+            `INSERT INTO machines (name, type) VALUES ($1, $2) RETURNING id`, [this.name, this.type]
         );
         this.id = rows[0].id;
         return this;
@@ -40,17 +39,6 @@ Machine.prototype.updateMachine = async function(id) {
     }
 };
 
-// Verändere den Status einer Order
-async function changeMachineState (state, id) {
-    try {
-        const { rows } = await poolConnection.query(
-            `UPDATE machines SET state = $1 WHERE id = $2`, [state, id]
-        );
-    } catch (error) {
-        throw error;
-    }
-};
 
 exports.Machine = Machine;
 exports.getAllMachines = getAllMachines;
-exports.changeMachineState = changeMachineState;

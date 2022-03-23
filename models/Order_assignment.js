@@ -1,67 +1,74 @@
 const { changeOrderState } = require('./Order');
-const { changeMachineState } = require('./Machine');
-const { assign } = require('lodash');
 
 // Order_assignment constructor
-function Order_assignment ({ machine_id, state }) {
+function Order_assignment ({ machine_id, order_id, state }) {
     this.machine_id = machine_id;
-    this.orders = new Array(); // Hier liegt der Fehler
+    this.order_id = order_id;
     this.state = state;
 };
 
 // Ausgabe aller Assignments
 async function get_all_assignments() {
     try {
-        const result = await poolConnection.query('SELECT * FROM order_assignments ORDER BY id ASC');
+        const result = await poolConnection.query('SELECT * FROM order_assignments ORDER BY id ASC'); // zuviel Memory
         return result;
     } catch (error) {
         throw error;
     }    
 };
 
-async function add_order(order_id, assignment_id) {
+// Ausgabe aller verwendeten machine_ids
+async function get_all_machine_ids() {
     try {
-        const result = await poolConnection.query(
-            `UPDATE order_assignments SET orders = array_append(orders, $1) WHERE id = $2`, [order_id, assignment_id]
-            );
+        const result = await poolConnection.query('SELECT DISTINCT machine_id FROM order_assignments');
         return result;
     } catch (error) {
         throw error;
+    }    
+};
+
+// Die soll nicht mehr in DB aggregieren, sondern hier in Programm und dann zur Ausgabe geben
+async function aggregate_orders(machine_id) {
+    try {
+        const result = await poolConnection.query(
+            `SELECT order_id FROM order_assignments WHERE machine_id = $1  AND state = 'WIP'`, [machine_id]
+        );
+        const machine_with_orders = new Map();
+        const orders = [];
+        for (let i=0; i<result.rows.length; i++) {
+            orders.push(result.rows[i].order_id);
+        }
+        machine_with_orders.set(machine_id, orders);
+        return machine_with_orders;        
+    } catch (error) {
+        throw error;
     }        
-    this.orders.push(order_id);
 }
 
-// Hier liegt der Fehler
-Order_assignment.prototype.create_order_assignment = async function() {
+async function aggregate_scheduled_orders(machine_id) {
     try {
-        const assignments = await get_all_assignments();
-        console.log(assignments.rows.length);
-        console.log(assignments.rows);
-        if (assignments.rows.length) {
-            console.log('if wird ausgeführt');
-            for (let i=0; i < assignments.rows.length; i++) {
-                if(this.machine_id == assignments.rows[i].machine_id) {
-                    if(this.state == assignments.rows[i].state) {
-                        await add_order(this.orders[0], this.id);
-                    }
-                } else {
-                    const { rows } = await poolConnection.query(
-                        `INSERT INTO order_assignments (machine_id, orders, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.orders, this.state]
-                    );        
-                    this.id = rows[0].id;
-                }
-            }   
-        } else {
-            console.log('else wird ausgeführt');
-            const { rows } = await poolConnection.query(
-                `INSERT INTO order_assignments (machine_id, orders, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.orders, this.state]
-            );        
-            this.id = rows[0].id;
-        }        
-        for(let i=0; i < this.orders.length; i++) {  // this.orders ist undefined
-            await changeOrderState("processing", this.orders[i]);
-        }        
-        await changeMachineState("used", this.machine_id);
+        const result = await poolConnection.query(
+            `SELECT order_id FROM order_assignments WHERE machine_id = $1  AND state = 'Scheduled'`, [machine_id]
+        );
+        const machine_with_orders = new Map();
+        const orders = [];
+        for (let i=0; i<result.rows.length; i++) {
+            orders.push(result.rows[i].order_id);
+        }
+        machine_with_orders.set(machine_id, orders);
+        return machine_with_orders;        
+    } catch (error) {
+        throw error;
+    }        
+}
+
+Order_assignment.prototype.create_order_assignment = async function() {
+    try {        
+        const { rows } = await poolConnection.query(
+            // Hier war der Fehler
+            `INSERT INTO order_assignments (machine_id, order_id, state) VALUES ($1, $2, $3) RETURNING id`, [this.machine_id, this.order_id, this.state]
+        );
+        await changeOrderState("processing", this.order_id);
         return this; 
     } catch (error) {
         throw error;
@@ -70,5 +77,6 @@ Order_assignment.prototype.create_order_assignment = async function() {
 
 exports.Order_assignment = Order_assignment;
 exports.get_all_assignments = get_all_assignments;
-exports.add_order = add_order;
-
+exports.get_all_machine_ids = get_all_machine_ids;
+exports.aggregate_orders = aggregate_orders;
+exports.aggregate_scheduled_orders = aggregate_scheduled_orders;
