@@ -22,18 +22,34 @@
                             <th>Scheduled</th>
                         </tr>
                     </thead>
-                        <% for(let i = 0; i < order_assignments_wip.size; i++) { %>                                    
+                        <!-- Variablendefinition -->
+                        <% const regex_wip = /wip./ %>
+                        <% const regex_scheduled = /scheduled./ %>   
+                        <% let status = 'scheduled' %>
+                        <!-- Gehe durch die Keys der Outer Map -->
+                        <% for(let i = 0; i < order_assignments_wip.size; i++) { %>   
+                            <!-- Ist Key wip ? --> 
+                            <% let string1 = 'wip' + i %>
+                            <% let string2 = 'scheduled' + i %>
+                            <% if(order_assignments_wip.get(string1).match(regex_wip)) { %>
+                                <% status = 'wip' %>
+                            <% } else if(order_assignments_wip.get(string2).match(regex_scheduled)) { %>
+                                <% status = 'scheduled' %>
+                            <% } %>
+                            <!-- Ausgabe von jedem Key und Value -->
                             <% order_assignments_wip.get(i).forEach(function(value, key) { %>
                                 <tr>
                                     <td>
                                         <%= key %>
                                     </td>    
                                     <td>
-                                        <%= value %>
+                                        <% if (status === 'wip') { %>
+                                            <%= value %>
                                     </td>      
                                     <td>
-                                        <% for(let i = 0; i < order_assignments_scheduled.size; i++) { %>                                    
-                                            <% order_assignments_scheduled.get(i).forEach(function(value, key) { %>
+                                        <% } else if (status === 'scheduled') { %>
+                                            <%= value %>
+                                        <% } %>
                                     </td>                          
                                 </tr>   
                             <% }) %>  

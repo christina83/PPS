@@ -17,18 +17,41 @@ router.get('/', async (req, res) => {
     let inner_map = new Map();
     let inner_map_scheduled = new Map();
     let outer_map = new Map();
-    let outer_map_scheduled = new Map();
     for (let i = 0; i < machine_ids.rows.length; i++) {
       inner_map = await aggregate_orders(machine_ids.rows[i].machine_id);
       inner_map_scheduled = await aggregate_scheduled_orders(machine_ids.rows[i].machine_id);
-      outer_map.set(i, inner_map); // Hier als Key wip setzen
-      outer_map_scheduled.set(i, inner_map_scheduled); // Hier als Key scheduled setzen
-    }    
+      outer_map.set('wip' + i, inner_map);
+      outer_map.set('scheduled' + i, inner_map_scheduled);
+      console.log(outer_map);
+    }   
+
+    const regex_wip = /wip./;
+    const regex_scheduled = /scheduled./;
+    let status = 'initial';
+    for(let i = 0; i < outer_map.size; i++) { 
+      let string1 = 'wip' + i;
+      let string2 = 'scheduled' + i;
+      console.log('Hier:' + outer_map.get(string1));
+      console.log(outer_map.get(string1).match(/wip./)); // Funktioniert nicht, weil ich den Value bekomme, nicht den Key (also eine Map)
+      if(outer_map.get(string1).match(regex_wip)) {
+        status = 'wip';
+      } else if (outer_map.get(string2).match(regex_scheduled)) {
+        status = 'scheduled';
+      }
+      outer_map.get(i).forEach(function(value, key) {
+        if (status === 'wip') { 
+          console.log('wip');
+        } else if (status === 'scheduled') {
+          console.log('scheduled');
+        }
+      });
+    }
+                                        
+
     const machines = await getAllMachines(); 
     const orders = await getAllOrders();
     res.render('pages/order_assignments', {
         order_assignments_wip: outer_map,
-        order_assignments_scheduled: outer_map_scheduled,
         dropdown_machines: machines.rows,
         dropdown_orders: orders.rows
     });
