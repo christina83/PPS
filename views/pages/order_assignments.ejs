@@ -17,43 +17,26 @@
                             <th colspan="2"> Corresponding Orders</th>
                         </tr>
                         <tr>
-                            <th>Machine ID</th>
+                            <th>Machine / Job</th>
                             <th>WIP</th>
                             <th>Scheduled</th>
                         </tr>
-                    </thead>
-                        <!-- Variablendefinition -->
-                        <% const regex_wip = /wip./ %>
-                        <% const regex_scheduled = /scheduled./ %>   
-                        <% let status = 'scheduled' %>
-                        <!-- Gehe durch die Keys der Outer Map -->
-                        <% for(let i = 0; i < order_assignments_wip.size; i++) { %>   
-                            <!-- Ist Key wip ? --> 
-                            <% let string1 = 'wip' + i %>
-                            <% let string2 = 'scheduled' + i %>
-                            <% if(order_assignments_wip.get(string1).match(regex_wip)) { %>
-                                <% status = 'wip' %>
-                            <% } else if(order_assignments_wip.get(string2).match(regex_scheduled)) { %>
-                                <% status = 'scheduled' %>
-                            <% } %>
-                            <!-- Ausgabe von jedem Key und Value -->
-                            <% order_assignments_wip.get(i).forEach(function(value, key) { %>
-                                <tr>
-                                    <td>
-                                        <%= key %>
-                                    </td>    
-                                    <td>
-                                        <% if (status === 'wip') { %>
-                                            <%= value %>
-                                    </td>      
-                                    <td>
-                                        <% } else if (status === 'scheduled') { %>
-                                            <%= value %>
-                                        <% } %>
-                                    </td>                          
-                                </tr>   
-                            <% }) %>  
-                        <% } %>
+                    </thead>  
+                    <tbody>
+                        <% for (let [key, value] of machine2jobs.entries()) { %>                            
+                            <tr>
+                                <td>
+                                    <%= key %>
+                                </td>    
+                                <td>
+                                    <%= value.get('WIP') %>
+                                </td>      
+                                <td>
+                                    <%= value.get('Scheduled') %>
+                                </td>   
+                            </tr>
+                        <% } %>                       
+                    </tbody>                      
                 </table>                     
             </div>  
             <!-- Neue Order Assignment erstellen -->

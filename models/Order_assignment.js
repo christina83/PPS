@@ -10,7 +10,7 @@ function Order_assignment ({ machine_id, order_id, state }) {
 // Ausgabe aller Assignments
 async function get_all_assignments() {
     try {
-        const result = await poolConnection.query('SELECT * FROM order_assignments ORDER BY id ASC'); // zuviel Memory
+        const result = await poolConnection.query('SELECT * FROM order_assignments ORDER BY id ASC');
         return result;
     } catch (error) {
         throw error;
@@ -21,42 +21,40 @@ async function get_all_assignments() {
 async function get_all_machine_ids() {
     try {
         const result = await poolConnection.query('SELECT DISTINCT machine_id FROM order_assignments');
-        return result;
+        return result.rows.map(h => h.machine_id);
     } catch (error) {
         throw error;
     }    
 };
 
 // Die soll nicht mehr in DB aggregieren, sondern hier in Programm und dann zur Ausgabe geben
-async function aggregate_orders(machine_id) {
+async function aggregate_wip_orders(machine_id, inner_map) {
     try {
         const result = await poolConnection.query(
             `SELECT order_id FROM order_assignments WHERE machine_id = $1  AND state = 'WIP'`, [machine_id]
         );
-        const machine_with_orders = new Map();
         const orders = [];
         for (let i=0; i<result.rows.length; i++) {
             orders.push(result.rows[i].order_id);
         }
-        machine_with_orders.set(machine_id, orders);
-        return machine_with_orders;        
+        inner_map.set('WIP', orders);
+        return inner_map;        
     } catch (error) {
         throw error;
     }        
 }
 
-async function aggregate_scheduled_orders(machine_id) {
+async function aggregate_scheduled_orders(machine_id, inner_map) {
     try {
         const result = await poolConnection.query(
             `SELECT order_id FROM order_assignments WHERE machine_id = $1  AND state = 'Scheduled'`, [machine_id]
         );
-        const machine_with_orders = new Map();
         const orders = [];
         for (let i=0; i<result.rows.length; i++) {
             orders.push(result.rows[i].order_id);
         }
-        machine_with_orders.set(machine_id, orders);
-        return machine_with_orders;        
+        inner_map.set('Scheduled', orders);
+        return inner_map;        
     } catch (error) {
         throw error;
     }        
@@ -78,5 +76,5 @@ Order_assignment.prototype.create_order_assignment = async function() {
 exports.Order_assignment = Order_assignment;
 exports.get_all_assignments = get_all_assignments;
 exports.get_all_machine_ids = get_all_machine_ids;
-exports.aggregate_orders = aggregate_orders;
+exports.aggregate_wip_orders = aggregate_wip_orders;
 exports.aggregate_scheduled_orders = aggregate_scheduled_orders;
